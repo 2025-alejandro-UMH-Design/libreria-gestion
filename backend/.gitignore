@@ -1,0 +1,15 @@
+# Node
+node_modules/
+npm-debug.log
+.env
+dist/
+
+# Angular
+/frontend/dist/
+/frontend/node_modules/
+/frontend/.angular/
+
+# IDE
+.vscode/
+.idea/
+*.swp
