@@ -1,1 +1,37 @@
-<p>orden-detalle works!</p>
+<div class="container mt-4" *ngIf="orden">
+  <h2>Detalle de Orden #{{ orden.id }}</h2>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p><strong>Proveedor:</strong> {{ orden.proveedor.nombre }}</p>
+          <p><strong>Fecha:</strong> {{ orden.fecha | date:'dd/MM/yyyy' }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Estado:</strong> <span class="badge" [ngClass]="getBadgeClass(orden.estado)">{{ orden.estado | uppercase }}</span></p>
+          <p><strong>Total:</strong> {{ orden.total | currency }}</p>
+        </div>
+      </div>
+      <h4>Productos</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of orden.detalles">
+            <td>{{ d.producto.nombre }}</td>
+            <td>{{ d.cantidad }}</td>
+            <td>{{ d.precio_unitario | currency }}</td>
+            <td>{{ d.cantidad * d.precio_unitario | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <a routerLink="/ordenes" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</div>
