@@ -1,6 +1,12 @@
-// src/config/database.js
 const { Pool } = require('pg');
 require('dotenv').config();
+
+console.log('📦 Configuración de base de datos:');
+console.log('  DB_HOST:', process.env.DB_HOST);
+console.log('  DB_PORT:', process.env.DB_PORT);
+console.log('  DB_NAME:', process.env.DB_NAME);
+console.log('  DB_USER:', process.env.DB_USER);
+console.log('  DB_PASSWORD definida:', process.env.DB_PASSWORD ? '✅ Sí' : '❌ No');
 
 const pool = new Pool({
     host: process.env.DB_HOST,
@@ -8,7 +14,7 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    max: 20, // máximo de conexiones en el pool
+    max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
 });
@@ -16,13 +22,13 @@ const pool = new Pool({
 // Verificar conexión
 pool.connect((err, client, release) => {
     if (err) {
-        return console.error('Error al conectar a la base de datos:', err.stack);
+        console.error('❌ Error al conectar a la base de datos:', err.message);
+        return;
     }
     console.log('✅ Conexión exitosa a PostgreSQL');
     release();
 });
 
-// Manejador de errores
 pool.on('error', (err) => {
     console.error('Error inesperado en el pool de conexiones:', err);
     process.exit(-1);

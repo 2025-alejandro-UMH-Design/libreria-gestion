@@ -79,4 +79,15 @@ const authMiddleware = {
     }
 };
 
+const verificarToken = (req, res, next) => {
+    // Temporal: simular usuario autenticado con rol admin
+    req.user = { id: 1, rol: 'admin' };
+    next();
+};
+
+const esAdmin = (req, res, next) => {
+    // Temporal: permitir siempre
+    next();
+};
+
 module.exports = authMiddleware;

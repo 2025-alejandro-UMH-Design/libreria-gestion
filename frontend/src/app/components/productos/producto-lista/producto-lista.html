@@ -1,33 +1,38 @@
 <div class="container mt-4">
-  <h2>Lista de Productos</h2>
+  <h2 class="mb-4">Catálogo de Productos</h2>
   <a routerLink="/productos/nuevo" class="btn btn-primary mb-3">Nuevo Producto</a>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Stock</th>
-        <th>Categoría</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of productos">
-        <td>{{ p.codigo }}</td>
-        <td>{{ p.nombre }}</td>
-        <td>{{ p.precio | currency }}</td>
-        <td>
-          <span [class.text-danger]="p.stock_actual <= p.stock_minimo">
-            {{ p.stock_actual }}
-          </span>
-        </td>
-        <td>{{ p.categoria }}</td>
-        <td>
-          <a [routerLink]="['/productos/editar', p.id]" class="btn btn-sm btn-warning">Editar</a>
-          <button (click)="eliminarProducto(p.id)" class="btn btn-sm btn-danger ms-2">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col" *ngFor="let p of productos">
+      <div class="card h-100 shadow-sm">
+        <!-- Imagen del producto (placeholder si no hay) -->
+        <img 
+  [src]="p.imagen_url ? (baseUrl + p.imagen_url) : 'https://via.placeholder.com/300x200?text=Sin+imagen'" 
+  class="card-img-top" 
+  alt="{{ p.nombre }}"
+  style="height: 200px; object-fit: cover;"
+>
+        <div class="card-body">
+          <h5 class="card-title">{{ p.nombre }}</h5>
+          <p class="card-text text-muted">{{ p.codigo }}</p>
+<p class="card-text">
+  {{ p.descripcion ? (p.descripcion | slice:0:100) + (p.descripcion.length > 100 ? '...' : '') : 'Sin descripción' }}
+</p>          <p class="card-text">
+            <strong>Precio:</strong> {{ p.precio | currency }}
+          </p>
+          <p class="card-text">
+            <strong>Stock:</strong> 
+            <span [class.text-danger]="p.stock_actual <= p.stock_minimo">
+              {{ p.stock_actual }} / {{ p.stock_minimo }}
+            </span>
+          </p>
+          <p class="card-text"><strong>Categoría:</strong> {{ p.categoria }}</p>
+        </div>
+        <div class="card-footer bg-transparent d-flex justify-content-between">
+          <a [routerLink]="['/productos/editar', p.id]" class="btn btn-sm btn-outline-warning">Editar</a>
+          <button (click)="eliminarProducto(p.id)" class="btn btn-sm btn-outline-danger">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

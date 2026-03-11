@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importa CommonModule que incluye currency pipe y otras directivas comunes
-import { RouterModule } from '@angular/router'; // Importa RouterModule para routerLink
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ProductoService } from '../../../services/producto.service';
 import { Producto } from '../../../models/producto.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-producto-lista',
-  standalone: true, // Asumo que es standalone, si no lo es, hay que ajustar el módulo contenedor
-  imports: [
-    CommonModule,    // Proporciona el pipe 'currency' y directivas como ngIf, ngFor
-    RouterModule     // Proporciona las directivas routerLink, routerLinkActive, etc.
-  ],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './producto-lista.html',
   styleUrls: ['./producto-lista.css']
 })
 export class ProductoListComponent implements OnInit {
   productos: Producto[] = [];
+  baseUrl = environment.baseUrl;
 
   constructor(private productoService: ProductoService) { }
 

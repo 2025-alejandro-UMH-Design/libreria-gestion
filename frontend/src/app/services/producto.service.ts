@@ -1,70 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Producto } from '../models/producto.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
-  // Datos mock
-  private productos: Producto[] = [
-    {
-      id: 1,
-      codigo: 'LIB001',
-      nombre: 'Cien años de soledad',
-      descripcion: 'Novela de Gabriel García Márquez',
-      precio: 350.00,
-      stock_minimo: 5,
-      stock_actual: 12,
-      categoria: 'Novela',
-      imagen_url: ''
-    },
-    {
-      id: 2,
-      codigo: 'TEC002',
-      nombre: 'Aprende Angular',
-      descripcion: 'Guía práctica de Angular',
-      precio: 450.00,
-      stock_minimo: 3,
-      stock_actual: 2,
-      categoria: 'Tecnología',
-      imagen_url: ''
-    }
-  ];
+  private apiUrl = `${environment.apiUrl}/productos`;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getProductos(): Observable<Producto[]> {
-    return of(this.productos);
+    return this.http.get<Producto[]>(this.apiUrl);
   }
 
-  getProducto(id: number): Observable<Producto | undefined> {
-    const producto = this.productos.find(p => p.id === id);
-    return of(producto);
+  getProducto(id: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }
 
-  createProducto(producto: Producto): Observable<Producto> {
-    const newId = this.productos.length + 1;
-    const nuevo = { ...producto, id: newId };
-    this.productos.push(nuevo);
-    return of(nuevo);
+  createProducto(formData: FormData): Observable<Producto> {
+    return this.http.post<Producto>(this.apiUrl, formData);
   }
 
-  updateProducto(id: number, producto: Producto): Observable<Producto | null> {
-    const index = this.productos.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.productos[index] = { ...producto, id };
-      return of(this.productos[index]);
-    }
-    return of(null);
+  updateProducto(id: number, formData: FormData): Observable<Producto> {
+    return this.http.put<Producto>(`${this.apiUrl}/${id}`, formData);
   }
 
-  deleteProducto(id: number): Observable<boolean> {
-    const index = this.productos.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.productos.splice(index, 1);
-      return of(true);
-    }
-    return of(false);
+  deleteProducto(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
