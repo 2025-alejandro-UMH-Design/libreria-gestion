@@ -8,4 +8,5 @@ export interface Producto {
   stock_actual: number;
   categoria: string;
   imagen_url?: string;
+  // Si el backend incluye proveedor_id o proveedor_nombre, agrégalos si es necesario
 }

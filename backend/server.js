@@ -1,4 +1,5 @@
-// server.js - DEBE SER ASÍ
+// server.js
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -7,8 +8,10 @@ const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-// Importar rutas - VERIFICA QUE LAS RUTAS SEAN CORRECTAS
-const authRoutes = require('./src/routes/authRoutes');  // ← Debe importar el router
+
+// Importar rutas
+const authRoutes = require('./src/routes/authRoutes');
+const productoRoutes = require('./src/routes/producto.routes'); // Asegurar que existe
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,11 +34,19 @@ app.use(cors({
 app.use(compression());
 app.use(morgan('dev'));
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  setHeaders: (res, filePath) => {
+    res.set('Access-Control-Allow-Origin', 'http://localhost:4200'); // o '*' para pruebas
+    res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+  }
+}));
 // Aplicar rate limiting a rutas de auth
 app.use('/api/auth', limiter);
 
-// Rutas - VERIFICA QUE ESTO ESTÉ BIEN
-app.use('/api/auth', authRoutes);  // ← authRoutes debe ser un router, no un objeto
+// Rutas
+app.use('/api/auth', authRoutes);
+app.use('/api/productos', productoRoutes);
+app.use('/uploads', express.static('uploads'));
 
 // Ruta de salud
 app.get('/api/health', (req, res) => {

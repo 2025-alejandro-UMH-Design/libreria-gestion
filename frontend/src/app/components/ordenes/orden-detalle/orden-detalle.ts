@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrdenService } from '../../../services/orden.service';
 import { Orden } from '../../../models/orden.model';
+import { ModalImagenComponent } from '../../shared/modal-imagen/modal-imagen.component';
 
 @Component({
   selector: 'app-orden-detalle',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ModalImagenComponent],
   templateUrl: './orden-detalle.html',
   styleUrls: ['./orden-detalle.css']
 })
@@ -16,7 +18,8 @@ export class OrdenDetalleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private ordenService: OrdenService
+    private ordenService: OrdenService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +29,12 @@ export class OrdenDetalleComponent implements OnInit {
         this.orden = data;
       });
     }
+  }
+
+  abrirModalImagen(producto: any): void {
+    const modalRef = this.modalService.open(ModalImagenComponent);
+    modalRef.componentInstance.imagenUrl = producto.imagen_url;
+    modalRef.componentInstance.productoNombre = producto.nombre;
   }
 
   getBadgeClass(estado: string): string {

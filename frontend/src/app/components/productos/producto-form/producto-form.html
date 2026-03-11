@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <h2>{{ isEdit ? 'Editar' : 'Nuevo' }} Producto</h2>
-  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
     <div class="mb-3">
       <label class="form-label">Código</label>
       <input type="text" class="form-control" formControlName="codigo">
@@ -11,7 +11,7 @@
     </div>
     <div class="mb-3">
       <label class="form-label">Descripción</label>
-      <textarea class="form-control" formControlName="descripcion"></textarea>
+      <textarea class="form-control" formControlName="descripcion" rows="3"></textarea>
     </div>
     <div class="row">
       <div class="col-md-4 mb-3">
@@ -32,8 +32,16 @@
       <input type="text" class="form-control" formControlName="categoria">
     </div>
     <div class="mb-3">
-      <label class="form-label">URL de imagen</label>
-      <input type="text" class="form-control" formControlName="imagen_url">
+      <label class="form-label">Imagen</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+      <!-- Mostrar imagen actual si existe -->
+      <div *ngIf="imagenPreview" class="mt-2">
+        <img [src]="imagenPreview" alt="Vista previa" style="max-width: 200px; max-height: 200px;">
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="isEdit && productoForm.get('imagen_url')?.value">
+      <label>Imagen actual:</label>
+      <img [src]="productoForm.get('imagen_url')?.value" style="max-width: 100px; max-height: 100px;" alt="Imagen actual">
     </div>
     <button type="submit" class="btn btn-primary" [disabled]="productoForm.invalid">Guardar</button>
     <button type="button" class="btn btn-secondary ms-2" (click)="cancelar()">Cancelar</button>
