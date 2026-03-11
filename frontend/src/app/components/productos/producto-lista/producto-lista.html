@@ -1,1 +1,33 @@
-<p>producto-lista works!</p>
+<div class="container mt-4">
+  <h2>Lista de Productos</h2>
+  <a routerLink="/productos/nuevo" class="btn btn-primary mb-3">Nuevo Producto</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of productos">
+        <td>{{ p.codigo }}</td>
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.precio | currency }}</td>
+        <td>
+          <span [class.text-danger]="p.stock_actual <= p.stock_minimo">
+            {{ p.stock_actual }}
+          </span>
+        </td>
+        <td>{{ p.categoria }}</td>
+        <td>
+          <a [routerLink]="['/productos/editar', p.id]" class="btn btn-sm btn-warning">Editar</a>
+          <button (click)="eliminarProducto(p.id)" class="btn btn-sm btn-danger ms-2">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
