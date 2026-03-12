@@ -35,9 +35,9 @@ export class OrdenListComponent implements OnInit {
 
   cambiarEstado(id: number | undefined, nuevoEstado: EstadoOrden): void {
     if (!id) return;
-    this.ordenService.updateEstado(id, nuevoEstado).subscribe(() => {
-      this.cargarOrdenes(); // Recargar la lista
-    });
+    this.ordenService.cambiarEstado(id, nuevoEstado).subscribe(() => {
+  this.cargarOrdenes();
+});
   }
 
   getBadgeClass(estado: EstadoOrden): string {
