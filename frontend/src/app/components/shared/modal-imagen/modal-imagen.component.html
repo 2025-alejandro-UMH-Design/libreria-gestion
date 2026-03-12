@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ productoNombre }}</h5>
+  <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body text-center">
+  <img [src]="imagenUrl || 'https://via.placeholder.com/500x400?text=Sin+imagen'" 
+       class="img-fluid" 
+       alt="{{ productoNombre }}">
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Cerrar</button>
+</div>

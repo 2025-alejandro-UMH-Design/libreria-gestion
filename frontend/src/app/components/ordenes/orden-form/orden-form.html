@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <h2>Nueva Orden de Compra</h2>
+  <form [formGroup]="ordenForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Proveedor</label>
+        <select class="form-select" formControlName="proveedorId">
+          <option value="">Seleccione proveedor</option>
+          <option *ngFor="let p of proveedores" [value]="p.id">{{ p.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Fecha</label>
+        <input type="date" class="form-control" formControlName="fecha">
+      </div>
+    </div>
+
+    <h4>Detalles de productos</h4>
+    <div formArrayName="detalles">
+      <div *ngFor="let d of detallesArray.controls; let i = index" [formGroupName]="i" class="row mb-2 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label">Producto</label>
+          <select class="form-select" formControlName="productoId" (change)="onProductoChange(i)">
+            <option value="">Seleccione producto</option>
+            <option *ngFor="let prod of productos" [value]="prod.id">{{ prod.nombre }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Cantidad</label>
+          <input type="number" class="form-control" formControlName="cantidad" min="1">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Precio unitario</label>
+          <input type="number" class="form-control" formControlName="precio_unitario" readonly>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-danger" (click)="eliminarDetalle(i)" *ngIf="detallesArray.length > 1">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-secondary mb-3" (click)="agregarDetalle()">Agregar producto</button>
+
+    <div class="alert alert-info">
+      Total: {{ calcularTotal() | currency }}
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="ordenForm.invalid">Guardar Orden</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="cancelar()">Cancelar</button>
+  </form>
+</div>
