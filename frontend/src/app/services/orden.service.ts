@@ -1,81 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Orden, EstadoOrden } from '../models/orden.model';
-import { Producto } from '../models/producto.model';
-import { Proveedor } from '../models/proveedor.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdenService {
-  // Datos mock de productos y proveedores (para simular relaciones)
-  private productosMock: Producto[] = [
-    { id: 1, codigo: 'LIB001', nombre: 'Cien años de soledad', descripcion: '', precio: 350, stock_minimo: 5, stock_actual: 12, categoria: 'Novela' },
-    { id: 2, codigo: 'TEC002', nombre: 'Aprende Angular', descripcion: '', precio: 450, stock_minimo: 3, stock_actual: 2, categoria: 'Tecnología' }
-  ];
+  private apiUrl = `${environment.apiUrl}/ordenes`;
 
-  private proveedoresMock: Proveedor[] = [
-    { id: 1, nombre: 'Distribuidora Libros S.A.', contacto: 'Juan Pérez', telefono: '555-1234', email: 'ventas@distlibros.com', direccion: 'Av. Siempre Viva 123' },
-    { id: 2, nombre: 'Editorial Conocimiento', contacto: 'María García', telefono: '555-5678', email: 'contacto@editorialcono.com', direccion: 'Calle Falsa 456' }
-  ];
-
-  private ordenes: Orden[] = [
-    {
-      id: 1,
-      fecha: new Date('2025-03-01'),
-      proveedor: this.proveedoresMock[0],
-      estado: 'pendiente',
-      total: 800,
-      detalles: [
-        { producto: this.productosMock[0], cantidad: 2, precio_unitario: 350 },
-        { producto: this.productosMock[1], cantidad: 1, precio_unitario: 450 }
-      ]
-    },
-    {
-      id: 2,
-      fecha: new Date('2025-03-05'),
-      proveedor: this.proveedoresMock[1],
-      estado: 'completada',
-      total: 900,
-      detalles: [
-        { producto: this.productosMock[1], cantidad: 2, precio_unitario: 450 }
-      ]
-    }
-  ];
-
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getOrdenes(): Observable<Orden[]> {
-    return of(this.ordenes);
+    return this.http.get<Orden[]>(this.apiUrl);
   }
 
-  getOrden(id: number): Observable<Orden | undefined> {
-    const orden = this.ordenes.find(o => o.id === id);
-    return of(orden);
+  getOrden(id: number): Observable<Orden> {
+    return this.http.get<Orden>(`${this.apiUrl}/${id}`);
   }
 
-  createOrden(orden: Orden): Observable<Orden> {
-    const newId = this.ordenes.length + 1;
-    const nueva = { ...orden, id: newId };
-    this.ordenes.push(nueva);
-    return of(nueva);
+  createOrden(orden: any): Observable<Orden> {
+    return this.http.post<Orden>(this.apiUrl, orden);
   }
 
-  updateEstado(id: number, estado: EstadoOrden): Observable<Orden | null> {
-    const orden = this.ordenes.find(o => o.id === id);
-    if (orden) {
-      orden.estado = estado;
-      return of(orden);
-    }
-    return of(null);
+  cambiarEstado(id: number, estado: EstadoOrden): Observable<Orden> {
+    return this.http.patch<Orden>(`${this.apiUrl}/${id}/estado`, { estado });
   }
 
-  // Métodos auxiliares para obtener productos y proveedores (simulados)
-  getProductosMock(): Observable<Producto[]> {
-    return of(this.productosMock);
-  }
-
-  getProveedoresMock(): Observable<Proveedor[]> {
-    return of(this.proveedoresMock);
+  deleteOrden(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

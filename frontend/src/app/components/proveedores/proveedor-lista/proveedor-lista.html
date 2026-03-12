@@ -1,1 +1,30 @@
 <p>proveedor-lista works!</p>
+<div class="container mt-4">
+  <h2>Lista de Proveedores</h2>
+  <a routerLink="/proveedores/nuevo" class="btn btn-primary mb-3">Nuevo Proveedor</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Contacto</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+        <th>Dirección</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of proveedores">
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.contacto }}</td>
+        <td>{{ p.telefono }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.direccion }}</td>
+        <td>
+          <a [routerLink]="['/proveedores/editar', p.id]" class="btn btn-sm btn-warning">Editar</a>
+          <button (click)="eliminarProveedor(p.id)" class="btn btn-sm btn-danger ms-2">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

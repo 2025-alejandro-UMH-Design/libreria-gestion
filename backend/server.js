@@ -12,6 +12,8 @@ require('dotenv').config();
 // Importar rutas
 const authRoutes = require('./src/routes/authRoutes');
 const productoRoutes = require('./src/routes/producto.routes'); // Asegurar que existe
+const ordenRoutes = require('./src/routes/orden.routes');
+const proveedorRoutes = require('./src/routes/proveedor.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -34,6 +36,7 @@ app.use(cors({
 app.use(compression());
 app.use(morgan('dev'));
 
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   setHeaders: (res, filePath) => {
     res.set('Access-Control-Allow-Origin', 'http://localhost:4200'); // o '*' para pruebas
@@ -47,6 +50,9 @@ app.use('/api/auth', limiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/uploads', express.static('uploads'));
+app.use('/api/ordenes', ordenRoutes);
+app.use('/api/proveedores', proveedorRoutes);
+
 
 // Ruta de salud
 app.get('/api/health', (req, res) => {
