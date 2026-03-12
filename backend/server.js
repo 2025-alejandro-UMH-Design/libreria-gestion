@@ -14,6 +14,7 @@ const authRoutes = require('./src/routes/authRoutes');
 const productoRoutes = require('./src/routes/producto.routes'); // Asegurar que existe
 const ordenRoutes = require('./src/routes/orden.routes');
 const proveedorRoutes = require('./src/routes/proveedor.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -52,6 +53,7 @@ app.use('/api/productos', productoRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/ordenes', ordenRoutes);
 app.use('/api/proveedores', proveedorRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 
 // Ruta de salud

@@ -1,1 +1,170 @@
-<p>dashboard works!</p>
+<div class="dashboard-page">
+
+  <div class="dashboard-header">
+    <div>
+      <h1>Dashboard Administrativo</h1>
+      <p>Bienvenido, {{ adminName }}. Aquí puedes visualizar el resumen general del sistema.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-main" (click)="irANuevoProducto()">+ Nuevo producto</button>
+      <button class="btn-outline" (click)="irAOrdenes()">Ver órdenes</button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-title">Productos</span>
+      <h2>{{ totalProductos }}</h2>
+      <p>Total registrados en inventario</p>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-title">Proveedores</span>
+      <h2>{{ totalProveedores }}</h2>
+      <p>Proveedores disponibles</p>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-title">Órdenes</span>
+      <h2>{{ totalOrdenes }}</h2>
+      <p>Órdenes de compra gestionadas</p>
+    </div>
+
+    <div class="stat-card warning-card">
+      <span class="stat-title">Stock bajo</span>
+      <h2>{{ stockBajo }}</h2>
+      <p>Productos que requieren atención</p>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-title">Usuarios activos</span>
+      <h2>{{ usuariosActivos }}</h2>
+      <p>Empleados usando el sistema</p>
+    </div>
+  </div>
+
+  <div class="dashboard-main-grid">
+    <div class="panel panel-large">
+      <div class="panel-header">
+        <h3>Resumen operativo</h3>
+        <button class="link-btn" (click)="irAProductos()">Ir a productos</button>
+      </div>
+
+      <div class="progress-group">
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Estado del inventario</span>
+            <strong>{{ porcentajeInventario }}%</strong>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="porcentajeInventario"></div>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Gestión de compras</span>
+            <strong>{{ porcentajeCompras }}%</strong>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill orange" [style.width.%]="porcentajeCompras"></div>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Abastecimiento</span>
+            <strong>{{ porcentajeAbastecimiento }}%</strong>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill green-light" [style.width.%]="porcentajeAbastecimiento"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button class="quick-btn" (click)="irAProductos()">Gestionar productos</button>
+        <button class="quick-btn" (click)="irAOrdenes()">Gestionar órdenes</button>
+        <button class="quick-btn" routerLink="/productos/nuevo">Agregar producto</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Alertas importantes</h3>
+      </div>
+
+      <ul class="alerts-list">
+        <li>Hay {{ stockBajo }} productos con stock por debajo del mínimo.</li>
+        <li>Existen órdenes pendientes de revisión.</li>
+        <li>Se recomienda reabastecer artículos de papelería.</li>
+        <li>Monitorear categorías con mayor rotación.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tables-grid">
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Productos con stock bajo</h3>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Actual</th>
+              <th>Mínimo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of productosStockBajo">
+              <td>{{ producto.codigo }}</td>
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.categoria }}</td>
+              <td class="danger-text">{{ producto.stockActual }}</td>
+              <td>{{ producto.stockMinimo }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Órdenes recientes</h3>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Proveedor</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let orden of ordenesRecientes">
+              <td>#{{ orden.id }}</td>
+              <td>{{ orden.proveedor }}</td>
+              <td>{{ orden.fecha }}</td>
+              <td>
+                <span class="badge" [ngClass]="getEstadoClass(orden.estado)">
+                  {{ orden.estado }}
+                </span>
+              </td>
+              <td>L {{ orden.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
