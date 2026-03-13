@@ -25,6 +25,10 @@ export class ProductoListComponent implements OnInit {
     this.cargarProductos();
   }
 
+  onImageError(event: Event): void {
+  (event.target as HTMLImageElement).src = 'assets/no-image.png';
+}
+
   cargarProductos(): void {
     this.productoService.getProductos().subscribe(data => {
       this.productos = data;

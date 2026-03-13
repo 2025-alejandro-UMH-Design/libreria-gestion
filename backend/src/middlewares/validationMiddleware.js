@@ -1,9 +1,8 @@
 // src/middlewares/validationMiddleware.js
-const { validateEmail: validateEmailFormat, validatePassword, validateNombre } = require('../utils/validators');
+const { validateEmail: validateEmailFormat, validatePassword, validateNombre, validateRol } = require('../utils/validators');
 
 // Middleware para validar login
 const validateLogin = (req, res, next) => {
-  // Verificar que req.body existe
   if (!req.body) {
     return res.status(400).json({
       error: 'Error de validación',
@@ -14,14 +13,12 @@ const validateLogin = (req, res, next) => {
   const { email, password } = req.body;
   const errors = [];
 
-  // Validar email
   if (!email) {
     errors.push('Email es requerido');
   } else if (!validateEmailFormat(email)) {
     errors.push('Email inválido');
   }
 
-  // Validar password
   if (!password) {
     errors.push('Contraseña es requerida');
   } else if (!validatePassword(password)) {
@@ -40,7 +37,8 @@ const validateLogin = (req, res, next) => {
 
 // Middleware para validar registro
 const validateRegister = (req, res, next) => {
-  // Verificar que req.body existe
+  console.log('validateRegister - req.body:', req.body); // Depuración
+
   if (!req.body) {
     return res.status(400).json({
       error: 'Error de validación',
@@ -48,7 +46,7 @@ const validateRegister = (req, res, next) => {
     });
   }
 
-  const { nombre, email, password, rol } = req.body;
+  const { nombre, email, password, rol } = req.body; // Asegurar que se llama rol
   const errors = [];
 
   // Validar nombre
@@ -73,7 +71,7 @@ const validateRegister = (req, res, next) => {
   }
 
   // Validar rol (si viene)
-  if (rol && !['admin', 'empleado'].includes(rol)) {
+  if (rol !== undefined && !validateRol(rol)) {
     errors.push('Rol debe ser admin o empleado');
   }
 
@@ -89,7 +87,6 @@ const validateRegister = (req, res, next) => {
 
 // Middleware para validar email (para otras rutas)
 const validateEmail = (req, res, next) => {
-  // Verificar que req.body existe
   if (!req.body) {
     return res.status(400).json({
       error: 'Error de validación',

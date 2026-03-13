@@ -22,6 +22,7 @@
   class="card-img-top" 
   alt="{{ p.nombre }}"
   style="height: 200px; object-fit: cover;"
+  (error)="onImageError($event)"
 >
         <div class="card-body">
           <h5 class="card-title">{{ p.nombre }}</h5>
