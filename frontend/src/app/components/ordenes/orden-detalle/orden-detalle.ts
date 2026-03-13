@@ -1,41 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrdenService } from '../../../services/orden.service';
 import { Orden } from '../../../models/orden.model';
-import { ModalImagenComponent } from '../../shared/modal-imagen/modal-imagen.component';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-orden-detalle',
   standalone: true,
-  imports: [CommonModule, RouterModule, ModalImagenComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './orden-detalle.html',
   styleUrls: ['./orden-detalle.css']
 })
 export class OrdenDetalleComponent implements OnInit {
+  @Input() ordenId?: number; // Para recibir el ID cuando se usa en modal
   orden?: Orden;
 
   constructor(
     private route: ActivatedRoute,
     private ordenService: OrdenService,
-    private modalService: NgbModal
+    public activeModal: NgbActiveModal, // Para controlar el modal
+    private cdr: ChangeDetectorRef // inyectar
+
   ) { }
 
   ngOnInit(): void {
+  console.log('Modal recibió ID:', this.ordenId);
+  if (this.ordenId) {
+    this.cargarOrden(this.ordenId);
+  } else {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.ordenService.getOrden(id).subscribe(data => {
-        this.orden = data;
-      });
-    }
+    console.log('ID desde ruta:', id);
+    if (id) this.cargarOrden(id);
   }
+}
 
-  abrirModalImagen(producto: any): void {
-    const modalRef = this.modalService.open(ModalImagenComponent);
-    modalRef.componentInstance.imagenUrl = producto.imagen_url;
-    modalRef.componentInstance.productoNombre = producto.nombre;
-  }
+cargarOrden(id: number): void {
+  this.ordenService.getOrden(id).subscribe({
+    next: (data) => {
+      console.log('Datos recibidos:', data);
+      this.orden = data;
+      this.cdr.detectChanges(); // forzar actualización
+    },
+    error: (err) => console.error('Error al cargar orden:', err)
+  });
+}
+
+  onImageError(event: Event): void {
+  (event.target as HTMLImageElement).src = 'assets/no-image.png';
+}
 
   getBadgeClass(estado: string): string {
     switch(estado) {

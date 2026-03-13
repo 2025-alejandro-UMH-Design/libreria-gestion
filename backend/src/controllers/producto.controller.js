@@ -100,19 +100,24 @@ const update = async (req, res) => {
 
 // Eliminar producto
 const deleteProduct = async (req, res) => {
-    const { id } = req.params;
-    try {
-        // Verificar si existe
-        const existente = await productoQueries.getById(id);
-        if (!existente) {
-            return res.status(404).json({ message: 'Producto no encontrado' });
-        }
-        await productoQueries.delete(id);
-        res.json({ message: 'Producto eliminado correctamente' });
-    } catch (error) {
-        console.error('Error en delete:', error);
-        res.status(500).json({ message: 'Error al eliminar producto', error: error.message });
+  const { id } = req.params;
+  try {
+    const existente = await productoQueries.getById(id);
+    if (!existente) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
     }
+    await productoQueries.delete(id);
+    res.json({ message: 'Producto eliminado correctamente' });
+  } catch (error) {
+    console.error('Error en delete:', error);
+    // PostgreSQL error code 23503 = foreign key violation
+    if (error.code === '23503') {
+      return res.status(409).json({
+        message: 'No se puede eliminar el producto porque tiene órdenes de compra asociadas.'
+      });
+    }
+    res.status(500).json({ message: 'Error al eliminar producto', error: error.message });
+  }
 };
 
 module.exports = {
