@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProveedorService } from '../../../services/proveedor.service';
@@ -14,8 +14,10 @@ templateUrl: './proveedor-lista.html',
 export class ProveedorListComponent implements OnInit {
   proveedores: Proveedor[] = [];
 
-  constructor(private proveedorService: ProveedorService) { }
-
+  constructor(
+    private proveedorService: ProveedorService,
+    private cdr: ChangeDetectorRef
+  ) { }
   ngOnInit(): void {
     this.cargarProveedores();
   }
@@ -23,6 +25,7 @@ export class ProveedorListComponent implements OnInit {
   cargarProveedores(): void {
     this.proveedorService.getProveedores().subscribe(data => {
       this.proveedores = data;
+      this.cdr.detectChanges();
     });
   }
 

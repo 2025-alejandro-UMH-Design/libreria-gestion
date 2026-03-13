@@ -53,7 +53,7 @@ const ordenQueries = {
             const ordenValues = [
                 ordenData.fecha || new Date(),
                 ordenData.proveedor_id,
-                ordenData.usuario_id || 1, // temporal mientras no hay auth
+                ordenData.usuario_id || 1,
                 'pendiente',
                 ordenData.total || 0,
                 ordenData.observaciones || ''

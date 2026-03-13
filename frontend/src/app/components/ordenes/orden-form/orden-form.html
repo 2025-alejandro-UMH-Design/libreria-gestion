@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-6 mb-3">
         <label class="form-label">Proveedor</label>
-        <select class="form-select" formControlName="proveedorId">
+        <select class="form-select" formControlName="proveedor_id">   <!-- Cambiado -->
           <option value="">Seleccione proveedor</option>
           <option *ngFor="let p of proveedores" [value]="p.id">{{ p.nombre }}</option>
         </select>
@@ -20,7 +20,7 @@
       <div *ngFor="let d of detallesArray.controls; let i = index" [formGroupName]="i" class="row mb-2 align-items-end">
         <div class="col-md-4">
           <label class="form-label">Producto</label>
-          <select class="form-select" formControlName="productoId" (change)="onProductoChange(i)">
+          <select class="form-select" formControlName="producto_id" (change)="onProductoChange(i)">  <!-- Cambiado -->
             <option value="">Seleccione producto</option>
             <option *ngFor="let prod of productos" [value]="prod.id">{{ prod.nombre }}</option>
           </select>

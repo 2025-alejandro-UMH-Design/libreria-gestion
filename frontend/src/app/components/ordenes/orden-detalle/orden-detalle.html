@@ -1,45 +1,54 @@
-<div class="container mt-4" *ngIf="orden">
-  <h2>Detalle de Orden #{{ orden.id }}</h2>
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <p><strong>Proveedor:</strong> {{ orden.proveedor.nombre }}</p>
-          <p><strong>Fecha:</strong> {{ orden.fecha | date:'dd/MM/yyyy' }}</p>
-        </div>
-        <div class="col-md-6">
-          <p><strong>Estado:</strong> <span class="badge" [ngClass]="getBadgeClass(orden.estado)">{{ orden.estado | uppercase }}</span></p>
-          <p><strong>Total:</strong> {{ orden.total | currency }}</p>
-        </div>
-      </div>
-      <h4>Productos</h4>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio unitario</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-  <tr *ngFor="let d of orden.detalles">
-    <td>{{ d.producto.nombre }}</td>
-    <td>{{ d.cantidad }}</td>
-    <td>{{ d.precio_unitario | currency }}</td>
-    <td>{{ d.cantidad * d.precio_unitario | currency }}</td>
-    <td>
-      <button class="btn btn-sm btn-info" (click)="abrirModalImagen(d.producto)">
-        Ver imagen
-      </button>
-    </td>
-  </tr>
-</tbody>
-      </table>
-      <a routerLink="/ordenes" class="btn btn-secondary">Volver</a>
-    </div>
+<div class="modal-header">
+  <h5 class="modal-title" *ngIf="orden">Detalle de Orden #{{ orden.id }}</h5>
+  <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
+</div>
+<div *ngIf="!orden" class="text-center p-4">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Cargando...</span>
   </div>
 </div>
 
-<!-- Referencia oculta para satisfacer al compilador -->
-<app-modal-imagen *ngIf="false"></app-modal-imagen>
+<div class="modal-body" *ngIf="orden">
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <p><strong>Proveedor:</strong> {{ orden.proveedor?.nombre }}</p>
+      <p><strong>Fecha:</strong> {{ orden.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+    <div class="col-md-6">
+      <p><strong>Estado:</strong> <span class="badge" [ngClass]="getBadgeClass(orden.estado)">{{ orden.estado | uppercase }}</span></p>
+      <p><strong>Total:</strong> {{ orden.total | currency }}</p>
+    </div>
+  </div>
+
+  <h5>Productos</h5>
+  <div class="row row-cols-1 row-cols-md-2 g-3">
+    <div class="col" *ngFor="let detalle of orden.detalles">
+      <div class="card h-100">
+        <div class="row g-0">
+          <div class="col-md-4">
+<img 
+  [src]="detalle.producto.imagen_url ? ('http://localhost:4000' + (detalle.producto.imagen_url.startsWith('/') ? '' : '/') + detalle.producto.imagen_url) : 'assets/no-image.png'" 
+  class="img-fluid rounded-start" 
+  alt="{{ detalle.producto.nombre }}"
+  style="height: 100%; object-fit: cover;"
+  (error)="onImageError($event)"
+>
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h6 class="card-title">{{ detalle.producto.nombre }}</h6>
+              <p class="card-text">
+                <small class="text-muted">Cantidad: {{ detalle.cantidad }}</small><br>
+                <strong>Precio unitario:</strong> {{ detalle.precio_unitario | currency }}<br>
+                <strong>Subtotal:</strong> {{ detalle.cantidad * detalle.precio_unitario | currency }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Cerrar</button>
+</div>

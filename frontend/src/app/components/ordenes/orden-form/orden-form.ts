@@ -89,29 +89,30 @@ this.productoService.getProductos().subscribe((data: Producto[]) => this.product
   }
 
   onSubmit(): void {
-    if (this.ordenForm.invalid) return;
+  if (this.ordenForm.invalid) return;
 
-    const formValue = this.ordenForm.value;
-    const detalles = formValue.detalles.map((d: any) => {
-      const producto = this.productos.find(p => p.id === Number(d.producto_id));
-      return {
-        producto_id: d.producto_id,
-        cantidad: d.cantidad,
-        precio_unitario: producto!.precio
-      };
-    });
-
-    const ordenData = {
-      proveedor_id: formValue.proveedor_id,
-      fecha: formValue.fecha,
-      observaciones: formValue.observaciones,
-      detalles: detalles
+  const formValue = this.ordenForm.value;
+  const detalles = formValue.detalles.map((d: any) => {
+    const producto = this.productos.find(p => p.id === Number(d.producto_id));
+    return {
+      producto_id: d.producto_id,
+      cantidad: d.cantidad,
+      precio_unitario: producto!.precio // usamos el precio del producto
     };
+  });
 
-    this.ordenService.createOrden(ordenData).subscribe(() => {
-      this.router.navigate(['/ordenes']);
-    });
-  }
+  const ordenData = {
+    proveedor_id: formValue.proveedor_id,
+    fecha: formValue.fecha,
+    observaciones: formValue.observaciones,
+    detalles: detalles
+  };
+
+  this.ordenService.createOrden(ordenData).subscribe({
+    next: () => this.router.navigate(['/ordenes']),
+    error: (err) => console.error('Error al crear orden', err)
+  });
+}
 
   cancelar(): void {
     this.router.navigate(['/ordenes']);
