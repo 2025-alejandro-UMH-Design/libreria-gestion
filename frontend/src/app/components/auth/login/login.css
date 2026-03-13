@@ -1,0 +1,48 @@
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2e7d32 0%, #ef6c00 100%);
+}
+
+.auth-icon {
+  font-size: 3rem;
+  color: #2e7d32;
+}
+
+.title {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.register-link {
+  color: #ef6c00;
+  font-weight: 600;
+}
+
+.card-custom {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.btn-main {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  transition: all 0.3s;
+}
+
+.btn-main:hover {
+  background-color: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(46,125,50,0.4);
+}
+
+.btn-main:disabled {
+  background-color: #6c757d;
+  transform: none;
+}

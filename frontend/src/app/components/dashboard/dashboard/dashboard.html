@@ -1,1 +1,52 @@
-<p>dashboard works!</p>
+<div class="container mt-4">
+  <h2>Dashboard</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-header">Productos</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ totales.totalProductos }}</h5>
+          <p class="card-text">Total de productos</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header">Proveedores</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ totales.totalProveedores }}</h5>
+          <p class="card-text">Total de proveedores</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">Órdenes</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ totales.totalOrdenes }}</h5>
+          <p class="card-text">Total de órdenes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Productos con stock bajo</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Stock actual</th>
+        <th>Stock mínimo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of stockBajo">
+        <td>{{ p.codigo }}</td>
+        <td>{{ p.nombre }}</td>
+        <td class="text-danger">{{ p.stock_actual }}</td>
+        <td>{{ p.stock_minimo }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

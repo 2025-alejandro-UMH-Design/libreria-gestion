@@ -10,7 +10,7 @@ require('dotenv').config();
 
 
 // Importar rutas
-const authRoutes = require('./src/routes/authRoutes');
+const authRoutes = require('./src/routes/auth.routes'); // si es auth.routes.js
 const productoRoutes = require('./src/routes/producto.routes'); // Asegurar que existe
 const ordenRoutes = require('./src/routes/orden.routes');
 const proveedorRoutes = require('./src/routes/proveedor.routes');
