@@ -1,0 +1,10 @@
+footer a {
+  transition: color 0.2s;
+}
+footer a:hover {
+  color: white !important;
+  text-decoration: underline !important;
+}
+footer small {
+  font-size: 0.85rem;
+}
