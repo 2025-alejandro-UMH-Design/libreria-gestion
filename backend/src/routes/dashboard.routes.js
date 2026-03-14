@@ -11,5 +11,9 @@ const dashboardController = require('../controllers/dashboard.controller'); // A
 router.get('/totales', dashboardController.getTotales);
 router.get('/stock-bajo', dashboardController.getStockBajo);
 router.get('/ultimas-ordenes', dashboardController.getUltimasOrdenes);
+router.get('/ordenes-por-mes', dashboardController.getOrdenesPorMes);
+router.get('/productos-mas-vendidos', dashboardController.getProductosMasVendidos);
+router.get('/stock-total', dashboardController.getStockTotal);
+router.get('/ventas-por-empleado', dashboardController.getVentasPorEmpleado);
 
 module.exports = router;

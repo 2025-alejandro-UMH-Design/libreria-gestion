@@ -1,62 +1,253 @@
-/* You can add global styles to this file, and also import other style files */
-/* Tema personalizado */
+/* ============================================
+   Estilos globales - Librería
+   ============================================ */
+
+/* Importar fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Playfair+Display:wght@400;700&display=swap');
+
+/* Variables de color */
 :root {
-  --primary-color: #0d6efd;
-  --secondary-color: #6c757d;
-  --success-color: #198754;
-  --danger-color: #dc3545;
-  --warning-color: #ffc107;
-  --info-color: #0dcaf0;
+  --primary: #8B5A2B;      /* Marrón cálido (madera/cuero) */
+  --primary-light: #A6754A;
+  --primary-dark: #5F3F1E;
+  --secondary: #2E5C4E;    /* Verde bosque */
+  --secondary-light: #3F7868;
+  --secondary-dark: #1F4036;
+  --accent: #D98C5F;       /* Terracota */
+  --light: #F8F5F0;        /* Fondo cálido */
+  --dark: #2C2C2C;
+  --gray: #6c757d;
+  --light-gray: #e9ecef;
+  --white: #ffffff;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  --border-radius: 0.5rem;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
+/* Estilos base */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--light);
+  color: var(--dark);
+  line-height: 1.6;
 }
 
-/* Mejoras en las tarjetas de productos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  color: var(--primary-dark);
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+.navbar-nav .active {
+  font-weight: 600;
+  border-bottom: 2px solid white;
+}
+
+/* Botones */
+.btn {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-success {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+.btn-success:hover {
+  background-color: var(--secondary-dark);
+  border-color: var(--secondary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline-warning {
+  color: var(--primary-dark);
+  border-color: var(--primary);
+}
+
+.btn-outline-warning:hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Tarjetas (cards) */
 .card {
-  transition: transform 0.2s, box-shadow 0.2s;
   border: none;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  background-color: var(--white);
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-lg);
 }
 
-.card-img-top {
-  border-top-left-radius: calc(0.375rem - 1px);
-  border-top-right-radius: calc(0.375rem - 1px);
+.card-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  font-weight: 600;
+  border-bottom: none;
+  padding: 0.75rem 1.25rem;
 }
 
-/* Botones */
-.btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+.card-header.bg-warning {
+  background: linear-gradient(135deg, #f0ad4e 0%, #ec971f 100%);
+  color: #2C2C2C;
 }
 
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+.card-header.bg-info {
+  background: linear-gradient(135deg, #5bc0de 0%, #31b0d5 100%);
+  color: white;
+}
+
+.card-header.bg-success {
+  background: linear-gradient(135deg, #5cb85c 0%, #449d44 100%);
+  color: white;
+}
+
+.card-header.bg-secondary {
+  background: linear-gradient(135deg, var(--gray) 0%, #545b62 100%);
+  color: white;
 }
 
 /* Tablas */
 .table {
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .table thead {
-  background-color: var(--primary-color);
+  background-color: var(--primary);
   color: white;
+  font-weight: 600;
+}
+
+.table thead th {
+  border-bottom: none;
+  padding: 1rem;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(139, 90, 43, 0.05);
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  padding: 0.75rem;
 }
 
 /* Badges */
 .badge {
   padding: 0.5em 0.75em;
   font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+.badge.bg-warning {
+  background-color: #f0ad4e !important;
+  color: #2C2C2C;
+}
+
+.badge.bg-success {
+  background-color: #5cb85c !important;
+  color: white;
+}
+
+.badge.bg-danger {
+  background-color: #d9534f !important;
+  color: white;
+}
+
+/* Formularios */
+.form-control, .form-select {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--light-gray);
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.2rem rgba(139, 90, 43, 0.25);
+}
+
+/* Dashboard específico */
+.display-4 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Footer */
+footer {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: rgba(255,255,255,0.8);
+}
+
+footer a {
+  color: rgba(255,255,255,0.8);
+  transition: color 0.2s;
+}
+
+footer a:hover {
+  color: white !important;
+  text-decoration: underline !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .display-4 {
+    font-size: 2rem;
+  }
 }

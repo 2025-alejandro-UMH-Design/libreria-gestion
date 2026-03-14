@@ -9,6 +9,14 @@ export interface Totales {
   totalOrdenes: number;
 }
 
+export interface VentaEmpleado {
+  id: number;
+  nombre: string;
+  email: string;
+  total_ordenes: number;
+  monto_total: number;
+}
+
 export interface ProductoStockBajo {
   id: number;
   codigo: string;
@@ -26,6 +34,21 @@ export interface UltimaOrden {
   proveedor: string; // o proveedor_nombre según tu backend
 }
 
+export interface OrdenPorMes {
+  año: number;
+  mes: number;
+  total_ordenes: number;
+  monto_total: number; // Asegúrate de que exista
+}
+
+export interface ProductoMasVendido {
+  id: number;
+  codigo: string;
+  nombre: string;
+  cantidad_vendida: number;
+  monto_total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,7 +60,9 @@ export class DashboardService {
   getTotales(): Observable<Totales> {
     return this.http.get<Totales>(`${this.apiUrl}/totales`);
   }
-
+getStockTotal(): Observable<ProductoStockBajo[]> {
+  return this.http.get<ProductoStockBajo[]>(`${this.apiUrl}/stock-total`);
+}
   getStockBajo(): Observable<ProductoStockBajo[]> {
     return this.http.get<ProductoStockBajo[]>(`${this.apiUrl}/stock-bajo`);
   }
@@ -45,4 +70,20 @@ export class DashboardService {
   getUltimasOrdenes(): Observable<UltimaOrden[]> {
     return this.http.get<UltimaOrden[]>(`${this.apiUrl}/ultimas-ordenes`);
   }
+
+  getVentasPorEmpleado(): Observable<VentaEmpleado[]> {
+  return this.http.get<VentaEmpleado[]>(`${this.apiUrl}/ventas-por-empleado`);
+}
+
+  getOrdenesPorMes(fechaInicio?: string, fechaFin?: string): Observable<OrdenPorMes[]> {
+  let url = `${this.apiUrl}/ordenes-por-mes`;
+  if (fechaInicio && fechaFin) {
+    url += `?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
+  }
+  return this.http.get<OrdenPorMes[]>(url);
+}
+
+getProductosMasVendidos(): Observable<ProductoMasVendido[]> {
+  return this.http.get<ProductoMasVendido[]>(`${this.apiUrl}/productos-mas-vendidos`);
+}
 }
