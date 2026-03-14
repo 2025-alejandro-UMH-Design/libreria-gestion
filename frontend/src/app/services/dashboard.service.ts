@@ -18,6 +18,14 @@ export interface ProductoStockBajo {
   cantidad_faltante: number;
 }
 
+export interface UltimaOrden {
+  id: number;
+  fecha_orden: string;
+  estado: string;
+  total: number;
+  proveedor: string; // o proveedor_nombre según tu backend
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,5 +40,9 @@ export class DashboardService {
 
   getStockBajo(): Observable<ProductoStockBajo[]> {
     return this.http.get<ProductoStockBajo[]>(`${this.apiUrl}/stock-bajo`);
+  }
+
+  getUltimasOrdenes(): Observable<UltimaOrden[]> {
+    return this.http.get<UltimaOrden[]>(`${this.apiUrl}/ultimas-ordenes`);
   }
 }

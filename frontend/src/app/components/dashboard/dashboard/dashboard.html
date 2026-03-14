@@ -5,7 +5,7 @@
       <div class="card text-white bg-primary mb-3">
         <div class="card-header">Productos</div>
         <div class="card-body">
-          <h5 class="card-title">{{ totales.totalProductos }}</h5>
+<h5 class="card-title display-4">{{ totales.totalProductos }}</h5>
           <p class="card-text">Total de productos</p>
         </div>
       </div>
@@ -30,23 +30,76 @@
     </div>
   </div>
 
-  <h3>Productos con stock bajo</h3>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Stock actual</th>
-        <th>Stock mínimo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of stockBajo">
-        <td>{{ p.codigo }}</td>
-        <td>{{ p.nombre }}</td>
-        <td class="text-danger">{{ p.stock_actual }}</td>
-        <td>{{ p.stock_minimo }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row mt-4">
+  <div class="col-12">
+    <h3>Productos con stock bajo</h3>
+    <div *ngIf="loadingStock" class="text-center">
+      <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+    <div *ngIf="!loadingStock && stockBajo.length === 0" class="alert alert-success">
+      No hay productos con stock bajo.
+    </div>
+    <table *ngIf="!loadingStock && stockBajo.length > 0" class="table table-striped">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Stock actual</th>
+          <th>Stock mínimo</th>
+          <th>Faltante</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of stockBajo">
+          <td>{{ p.codigo }}</td>
+          <td>{{ p.nombre }}</td>
+          <td class="text-danger">{{ p.stock_actual }}</td>
+          <td>{{ p.stock_minimo }}</td>
+          <td>{{ p.cantidad_faltante }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row mt-4">
+  <div class="col-md-6">
+    <!-- Aquí va la tabla de stock bajo que ya agregamos -->
+  </div>
+  <div class="col-md-6">
+    <h3>Últimas órdenes</h3>
+    <div *ngIf="loadingOrdenes" class="text-center">
+      <div class="spinner-border text-info" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+    <div *ngIf="!loadingOrdenes && ultimasOrdenes.length === 0" class="alert alert-secondary">
+      No hay órdenes recientes.
+    </div>
+    <table *ngIf="!loadingOrdenes && ultimasOrdenes.length > 0" class="table table-sm">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha</th>
+          <th>Proveedor</th>
+          <th>Total</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let o of ultimasOrdenes">
+          <td>{{ o.id }}</td>
+          <td>{{ o.fecha_orden | date:'dd/MM/yyyy' }}</td>
+          <td>{{ o.proveedor }}</td>
+          <td>{{ o.total | currency }}</td>
+          <td><span class="badge" [ngClass]="{
+                'bg-warning': o.estado === 'pendiente',
+                'bg-success': o.estado === 'completada',
+                'bg-danger': o.estado === 'cancelada'
+              }">{{ o.estado }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </div>
